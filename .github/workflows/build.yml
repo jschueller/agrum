@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - run: |
-        brew install swig
+        brew install swig python@3
         cmake --version
         pip3 install matplotlib scipy pandas pydot scikit-learn --break-system-packages
     - run: |
