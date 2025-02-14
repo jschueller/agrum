@@ -21,7 +21,8 @@ endif ()
 
 if (CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
     message(STATUS "** aGrUM Notification : mode DEBUG")
-    set(CMAKE_CXX_FLAGS "-DGUM_DEBUG_MODE -DGUM_NO_INLINE ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-DGUM_DEBUG_MODE ${CMAKE_CXX_FLAGS}")
+    set (AGRUM_INLINE OFF CACHE BOOL "overriden" FORCE)
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         set(CMAKE_EXE_LINKER_FLAGS " -ggdb ${CMAKE_EXE_LINKER_FLAGS}") # add -pg for profiling
         set(CMAKE_SHARED_LINKER_FLAGS " -ggdb ${CMAKE_SHARED_LINKER_FLAGS}") # add -pg for profiling
@@ -29,6 +30,11 @@ if (CMAKE_BUILD_TYPE MATCHES "^(DEBUG|Debug|debug)$")
     endif ()
 else ()
     message(STATUS "** aGrUM Notification : mode ${CMAKE_BUILD_TYPE}")
+endif ()
+
+option(AGRUM_INLINE "inline code" ON)
+if (NOT AGRUM_INLINE)
+    set(CMAKE_CXX_FLAGS "-DGUM_NO_INLINE ${CMAKE_CXX_FLAGS}")
 endif ()
 
 if (WIN32)

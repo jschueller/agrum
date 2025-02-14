@@ -19,7 +19,7 @@ jobs:
         -DZPython_EXECUTABLE=/usr/local/bin/python3 \
         -DZCMAKE_CXX_FLAGS="" \
         -DCMAKE_SWIG_FLAGS="" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
-        -DBUILD_PYTHON=ON .
+        -DBUILD_PYTHON=ON -DAGRUM_INLINE=OFF .
         make install
         #objdump -Ct /tmp/local/lib/libagrumBASE.dylib | grep RemoteObjectBase | grep typeinfo
         #objdump -Ct /tmp/local/lib/libagrumBN.dylib | grep RemoteObjectBase | grep typeinfo
