@@ -3,7 +3,7 @@ on:
   pull_request:
 jobs:
   macos:
-    runs-on: macos-13
+    runs-on: macos-latest
     env:
       MAKEFLAGS: -j3
     steps:
@@ -15,9 +15,9 @@ jobs:
     - run: |
         cmake \
         -DCMAKE_INSTALL_PREFIX=/tmp/local \
-        -DZZPython_EXECUTABLE=/opt/homebrew/bin/python3 \
-        -DPython_EXECUTABLE=/usr/local/bin/python3 \
-        -DCMAKE_CXX_FLAGS="" \
+        -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
+        -DZPython_EXECUTABLE=/usr/local/bin/python3 \
+        -DZCMAKE_CXX_FLAGS="" \
         -DCMAKE_SWIG_FLAGS="" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
         -DBUILD_PYTHON=ON .
         make install
