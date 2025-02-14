@@ -149,12 +149,12 @@ namespace gum {
     switch (bn.variable(node).varType()) {
       case gum::VarType::DISCRETIZED : {
         auto double_var
-            = static_cast< const DiscretizedVariable< double >* >(&(bn.variable(node)));
+            = dynamic_cast< const DiscretizedVariable< double >* >(&(bn.variable(node)));
         if (double_var != nullptr) {
           return _extractDiscretizedType_< DiscretizedVariable< double > >(double_var);
         } else {
           auto float_var
-              = static_cast< const DiscretizedVariable< float >* >(&(bn.variable(node)));
+              = dynamic_cast< const DiscretizedVariable< float >* >(&(bn.variable(node)));
           if (float_var != nullptr) {
             return _extractDiscretizedType_< DiscretizedVariable< float > >(float_var);
           }
