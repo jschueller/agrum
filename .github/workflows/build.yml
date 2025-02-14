@@ -15,7 +15,7 @@ jobs:
     - run: |
         cmake \
         -DCMAKE_INSTALL_PREFIX=/tmp/local \
-        -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
+        -DZZPython_EXECUTABLE=/opt/homebrew/bin/python3 \
         -DCMAKE_CXX_FLAGS="" \
         -DCMAKE_SWIG_FLAGS="" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
         -DBUILD_PYTHON=ON .
