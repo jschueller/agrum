@@ -1,0 +1,35 @@
+on:
+  push:
+  pull_request:
+jobs:
+  macos:
+    runs-on: macos-13
+    env:
+      MAKEFLAGS: -j3
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+        brew install swig
+        pip3 install matplotlib scipy pandas pydot scikit-learn --break-system-packages
+    - run: |
+        cmake \
+        -DCMAKE_INSTALL_PREFIX=/tmp/local \
+        -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
+        -DCMAKE_CXX_FLAGS="" \
+        -DCMAKE_SWIG_FLAGS="" -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function" \
+        -DBUILD_PYTHON=ON .
+        make install
+        #objdump -Ct /tmp/local/lib/libagrumBASE.dylib | grep RemoteObjectBase | grep typeinfo
+        #objdump -Ct /tmp/local/lib/libagrumBN.dylib | grep RemoteObjectBase | grep typeinfo
+        #otool -T /tmp/local/lib/libagrumBASE.dylib || echo "nope otool"
+        #nm -g /tmp/local/lib/libagrumBN.dylib || echo "nope nm"
+        ctest -R python_quick --output-on-failure --timeout 200 --schedule-random -V
+
+# https://www.qt.io/blog/quality-assurance/one-way-dynamic_cast-across-library-boundaries-can-fail-and-how-to-fix-it
+# __attribute__((visibility('default')))
+# objdump -TC ./install/lib/libagrumBASE.so|grep LabelizedVariable|grep typeinfo
+
+
+        #- RTLD_GLOBAL
+        #- ITK_TEMPLATE_EXPORT
+        #- https://github.com/blowekamp/PrivateDynamicCastTest
