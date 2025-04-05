@@ -32,10 +32,11 @@ jobs:
            -DCMAKE_INSTALL_PREFIX="C:/Users/runneradmin/miniconda3/Library" ^
            -DCMAKE_PREFIX_PATH="C:/Users/runneradmin/miniconda3/Library" ^
            -DCMAKE_CXX_FLAGS="/DWIN32 /D_WINDOWS /W3 /GR /EHsc" ^
-           -DZCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 ^
+           -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=8 ^
            -DBUILD_SHARED_LIBS=OFF -DAGRUM_INLINE=ON ^
            -DINSTALL_PYTHONDIR="C:/Users/runneradmin/miniconda3/Lib/site-packages" ^
-           -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" -DBUILD_PYTHON=ON -DAGRUM_PYTHON_SABI=OFF || exit 1
+           -DBUILD_PYTHON=ON -DAGRUM_PYTHON_SABI=ON ^
+           -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" || exit 1
           cmake --build . --target install --parallel 4 --verbose || exit 1
           C:\Users\runneradmin\miniconda3\python.exe .\mingw_test.py
           echo "youpi"
