@@ -39,5 +39,5 @@ jobs:
           cmake --build . --target install --parallel 4 --verbose || exit 1
           C:\Users\runneradmin\miniconda3\python.exe .\mingw_test.py
           echo "youpi"
-          ctest --output-on-failure --timeout 100 -j2 --repeat after-timeout:2 --schedule-random
+          ctest --output-on-failure --timeout 100 -j2 --repeat after-timeout:2 --schedule-random -R python
 

@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
 import pyagrum as gum
+
+# min bug
+bn = gum.fastBN("a->b<-c")
+p = bn.cpt("b")
+print("min=", p.min())
 
 # https://gitlab.com/agrumery/aGrUM/issues/15
 bn = gum.fastBN('a->b->d;a->c->d->e;f->b')
@@ -16,7 +20,3 @@ jointe = gum.Tensor().fillWith(1)
     #jointe *= bn.cpt(i)
 print(jointe)
 
-# min bug
-bn = gum.fastBN("a->b<-c")
-p = bn.cpt("b")
-print("min=", p.min())
