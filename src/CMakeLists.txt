@@ -61,7 +61,9 @@ endif ()
 set_source_files_properties(agrum/base/multidim/utils/FunctionGraphUtilities/operators/o4DGContext.cpp PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
 # warning: 'nanodbc::result::result_impl' has a field '{anonymous}::bound_column* nanodbc::result::result_impl::bound_columns_' whose type uses the anonymous namespace
-set_source_files_properties(agrum/base/external/nanodbc/nanodbc.cpp  PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+set_source_files_properties(agrum/base/external/nanodbc/nanodbc.cpp PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+
+set_source_files_properties(agrum/base/external/tinyxml/ticpp/tinyxmlparser.cpp PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
 #collect all source files 
 buildFileListsWithModules()
