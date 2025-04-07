@@ -33,7 +33,7 @@ jobs:
            -DCMAKE_PREFIX_PATH="C:/Users/runneradmin/miniconda3/Library" ^
            -DCMAKE_CXX_FLAGS="/DWIN32 /D_WINDOWS /W3 /GR /EHsc" ^
            -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=12 ^
-           -DBUILD_SHARED_LIBS=OFF -DAGRUM_INLINE=ON ^
+           -DBUILD_SHARED_LIBS=OFF -DAGRUM_INLINE=OFF ^
            -DINSTALL_PYTHONDIR="C:/Users/runneradmin/miniconda3/Lib/site-packages" ^
            -DBUILD_PYTHON=ON -DAGRUM_PYTHON_SABI=OFF ^
            -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" || exit 1
