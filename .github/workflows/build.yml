@@ -35,7 +35,7 @@ jobs:
            -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=12 ^
            -DBUILD_SHARED_LIBS=OFF -DAGRUM_INLINE=ON ^
            -DINSTALL_PYTHONDIR="C:/Users/runneradmin/miniconda3/Lib/site-packages" ^
-           -DBUILD_PYTHON=ON -DAGRUM_PYTHON_SABI=ON ^
+           -DBUILD_PYTHON=ON -DAGRUM_PYTHON_SABI=OFF ^
            -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" || exit 1
           cmake --build . --target install --parallel 4 --verbose || exit 1
           dir /p src
