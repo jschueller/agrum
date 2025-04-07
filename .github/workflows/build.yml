@@ -38,7 +38,7 @@ jobs:
            -DBUILD_PYTHON=ON -DAGRUM_PYTHON_SABI=ON ^
            -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" || exit 1
           cmake --build . --target install --parallel 4 --verbose || exit 1
-          C:\Users\runneradmin\miniconda3\python.exe .\mingw_test.py
+          C:\Users\runneradmin\miniconda3\python.exe .\mingw_test.py || exit 1
           echo "youpi"
           ctest --output-on-failure --timeout 100 -j2 --repeat after-timeout:2 --schedule-random -R python
 
