@@ -70,9 +70,10 @@ jobs:
           prepare: |
             pkg install -y cmake git devel/llvm devel/swig math/py-matplotlib science/py-scikit-learn science/py-scipy misc/py-tqdm math/py-pandas graphics/py-pydot devel/gdb
           run: |
-            cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_PYTHON=ON -DCMAKE_CXX_FLAGS="-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE" . || exit 1
+            cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_PYTHON=ON -DCMAKE_CXX_FLAGS="-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE"  . || exit 1
             cmake --build . --target install || exit 1
             cmake --build . --target gumTest || exit 1
             ./src/gumTest || echo "fail"
-            gdb -q -batch -ex 'handle SIGILL stop print nopass' -ex 'run'  -ex 'bt' -ex 'info registers' -ex 'x/16i $pc' ./src/gumTest
+            echo "xxxxxxxxxxxxxxxxxxxxxxx"
+            gdb -q -batch -ex 'set print thread-events off' -ex 'handle SIGILL stop print nopass' -ex 'run'  -ex 'bt' -ex 'info registers' -ex 'x/16i $pc' ./src/gumTest
             ctest -R python_quick --output-on-failure --timeout 200 --schedule-random -V
