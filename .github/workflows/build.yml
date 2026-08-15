@@ -1,0 +1,78 @@
+on:
+  push:
+  pull_request:
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+      - name: Install
+        shell: cmd
+        run: |
+          conda install -y cmake swig ninja scipy scikit-learn pandas matplotlib-base pydot
+      - name: Debug
+        shell: cmd
+        run: |
+          python -c "import pandas; print(pandas.__file__)"
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Build
+        shell: cmd
+        run: |
+          set "LIB=C:\Users\runneradmin\miniconda3\Library\lib;%LIB%"
+          set "INCLUDE=C:\Users\runneradmin\miniconda3\Library\include;%INCLUDE%"
+          cmake -G Ninja -B . -LAH ^
+           -DCMAKE_INSTALL_PREFIX="C:/Users/runneradmin/miniconda3/Library" ^
+           -DCMAKE_PREFIX_PATH="C:/Users/runneradmin/miniconda3/Library" ^
+           -DCMAKE_CXX_FLAGS="/DWIN32 /D_WINDOWS /W3 /GR /EHsc" ^
+           -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=12 ^
+           -DBUILD_SHARED_LIBS=OFF -DAGRUM_INLINE=OFF ^
+           -DINSTALL_PYTHONDIR="C:/Users/runneradmin/miniconda3/Lib/site-packages" ^
+           -DBUILD_PYTHON=ON -DAGRUM_PYTHON_SABI=OFF ^
+           -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" || exit 1
+          cmake --build . --target install --parallel 4 --verbose || exit 1
+          ctest --output-on-failure --timeout 100 -j2 --repeat after-timeout:2 --schedule-random -R python
+  macos:
+    runs-on: macos-latest
+    env:
+      MAKEFLAGS: -j3
+    steps:
+    - uses: actions/checkout@v7
+    - run: |
+        brew install swig
+        which python3
+        pip3 install matplotlib scipy pandas pydot scikit-learn --break-system-packages
+    - run: |
+        cmake \
+        -DCMAKE_INSTALL_PREFIX=/tmp/local -DPython_EXECUTABLE=/opt/homebrew/bin/python3 \
+        -DBUILD_PYTHON=ON -DAGRUM_INLINE=OFF .
+        make install
+        #objdump -Ct /tmp/local/lib/libagrumBASE.dylib | grep RemoteObjectBase | grep typeinfo
+        #objdump -Ct /tmp/local/lib/libagrumBN.dylib | grep RemoteObjectBase | grep typeinfo
+        #otool -T /tmp/local/lib/libagrumBASE.dylib || echo "nope otool"
+        #nm -g /tmp/local/lib/libagrumBN.dylib || echo "nope nm"
+        ctest -R python_quick --output-on-failure --timeout 200 --schedule-random -V
+
+  freebsd:
+    runs-on: ubuntu-latest
+    env:
+      MAKEFLAGS: -j4
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: vmactions/freebsd-vm@v1
+        with:
+          envs: 'MAKEFLAGS OMP_NUM_THREADS'
+          usesh: true
+          prepare: |
+            pkg install -y cmake git devel/llvm devel/swig math/py-matplotlib science/py-scikit-learn science/py-scipy misc/py-tqdm math/py-pandas graphics/py-pydot devel/gdb
+          run: |
+            cmake -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_PYTHON=ON -DCMAKE_CXX_FLAGS="-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_EXTENSIVE" . || exit 1
+            cmake --build . --target install || exit 1
+            cmake --build . --target gumTest || exit 1
+            ./src/gumTest || echo "fail"
+            gdb -q -batch -ex 'handle SIGILL stop print nopass' -ex 'run'  -ex 'bt' -ex 'info registers' -ex 'x/16i $pc' ./src/gumTest
+            ctest -R python_quick --output-on-failure --timeout 200 --schedule-random -V
