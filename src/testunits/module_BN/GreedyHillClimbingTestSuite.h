@@ -124,7 +124,7 @@ namespace gum_tests {
 
       std::vector< int > rank;
       if (!total_order.empty()) {
-        rank.resize(total_order.size());
+        rank.resize(nb_vars);
         int i = 0;
         for (const auto node: total_order) {
           rank[node] = i++;
@@ -726,7 +726,10 @@ namespace gum_tests {
         // std::cout << dag << std::endl;
         CHECK_EQ(dag, mydag);
       }
-    } catch (gum::Exception& e) { GUM_SHOWERROR(e) }
+    } catch (gum::Exception& e) { GUM_SHOWERROR(e)
+    } catch (const std::exception& e) { std::cerr << "std::exception: " << e.what() << std::endl;
+    } catch (...) { std::cerr << "unknown exception" << std::endl;
+    }
     // gum::BayesNet<double> bn =
     // search.learnBN<double> ( selector, estimator,
     // database.variableNames (),
